@@ -1,0 +1,45 @@
+<!--
+  HEADER PARTIAL — reference markup. Not served. Copied verbatim into every page.
+
+  Path placeholders:
+    For ROOT pages (index, about, services, our-team, contact, child-safety):
+      {HOME_PATH}=index.html
+      {ABOUT_PATH}=about.html
+      {SERVICES_PATH}=services.html
+      {TEAM_PATH}=our-team.html
+      {CHILD_SAFETY_PATH}=child-safety.html
+      {CONTACT_PATH}=contact.html
+
+    For SERVICE DETAIL pages (one folder deep, e.g. services/day-programs.html):
+      Prefix all of the above with "../"
+      {HOME_PATH}=../index.html, {ABOUT_PATH}=../about.html, etc.
+
+  Add aria-current="page" on the matching nav link of the current page (in BOTH
+  the desktop .nav-links and the mobile .mobile-nav).
+-->
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="{HOME_PATH}" class="header-logo">ThriveAbility Care</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="{HOME_PATH}">Home</a>
+      <a href="{ABOUT_PATH}">About</a>
+      <a href="{SERVICES_PATH}">Services</a>
+      <a href="{TEAM_PATH}">Our Team</a>
+      <a href="{CHILD_SAFETY_PATH}">Child Safety</a>
+    </nav>
+    <a href="{CONTACT_PATH}" class="btn btn-accent nav-cta">Contact Us</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" aria-label="Mobile">
+    <a href="{HOME_PATH}">Home</a>
+    <a href="{ABOUT_PATH}">About</a>
+    <a href="{SERVICES_PATH}">Services</a>
+    <a href="{TEAM_PATH}">Our Team</a>
+    <a href="{CHILD_SAFETY_PATH}">Child Safety</a>
+    <a href="{CONTACT_PATH}" class="btn btn-accent">Contact Us</a>
+  </nav>
+</header>
