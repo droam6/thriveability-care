@@ -1,0 +1,185 @@
+ROUND 2 — ThriveAbility Care palette swap. Match the client's existing brand identity (deep teal + sky blue accent + off-white) instead of the forest/cream/terracotta direction shipped in Round 1. Same structure, same content, same components — just the colour system changes.
+
+Read CLAUDE.md, progress.md, decisions.md.
+
+Working directory: ~/Desktop/thriveability-care
+
+This round only touches the colour system. No layout changes. No content changes. No new components. Find every forest/cream/terracotta token and swap it for the new teal/sky/off-white tokens.
+
+Execute in order. STOP at each marker.
+
+=== STEP 1: AUDIT THE CURRENT PALETTE FOOTPRINT ===
+
+1a. List every file that contains any of the old colour tokens or hex values:
+    --forest, --forest-dark, --cream, --cream-dark, --terracotta, --terracotta-dark, --charcoal, --charcoal-light
+    #2C4A3E, #1F3328, #F7F3EC, #EDE6D6, #C97B5C, #A85F44, #1F2421, #4A4F4B
+
+    Use grep -rn across the project, output a clean file-by-file count.
+
+1b. Specifically flag any place where these colours are used as inline styles in HTML files (not just in styles.css). Report file + line.
+
+1c. Show me the audit summary.
+
+>>> STOP 1: Confirm every place the palette lives.
+
+=== STEP 2: SWAP CSS ROOT VARIABLES ===
+
+2a. In assets/css/styles.css, locate the :root block at the top.
+
+2b. Replace the existing colour variables with this exact set, keeping the variable NAMES the same where possible (--forest stays as --forest, just gets a new hex) so we don't have to find/replace every var() reference downstream. Yes, this means --forest will literally hold a teal hex — that's intentional, we're aliasing names to avoid touching every component rule.
+
+    OLD                       NEW HEX
+    --forest                  #0F3D4C   (deep teal — primary brand)
+    --forest-dark             #0A2D38   (deeper teal — hover/footer)
+    --cream                   #F7FAFC   (off-white body bg)
+    --cream-dark              #EDF2F7   (alt section / card bg)
+    --terracotta              #3DA8E8   (sky blue accent)
+    --terracotta-dark         #2B8FCC   (sky hover)
+    --charcoal                #1F2937   (body text)
+    --charcoal-light          #4A5568   (muted text)
+    --white                   #FFFFFF   (no change)
+
+2c. Add three NEW variables right below for clarity:
+    --teal-light: #1A5468       (mid-teal, for section accents)
+    --sky-bright: #5BB8EE       (CTA hover highlight)
+    --acknowledgement-bg: rgba(247, 250, 252, 0.06)  (footer Acknowledgement strip)
+
+2d. Update shadow variables to use a teal-tinted shadow base instead of charcoal-tinted (subtle but matches the new palette better):
+    --shadow-sm: 0 2px 8px rgba(15, 61, 76, 0.08)
+    --shadow-md: 0 8px 24px rgba(15, 61, 76, 0.10)
+    --shadow-lg: 0 16px 48px rgba(15, 61, 76, 0.14)
+
+2e. Show me the new :root block.
+
+>>> STOP 2: Confirm root variables are swapped.
+
+=== STEP 3: COMPONENT RULES THAT NEED MORE THAN A VARIABLE SWAP ===
+
+Some rules reference rgba() with hardcoded RGB values that came from the old palette. Update each:
+
+3a. .hero-overlay — currently uses rgba(31,51,40,...) for the linear gradient and rgba(247,243,236,...) for the radial. Update to:
+    background:
+      linear-gradient(180deg, rgba(15, 61, 76, 0.55) 0%, rgba(10, 45, 56, 0.7) 100%),
+      radial-gradient(circle at 20% 80%, rgba(61, 168, 232, 0.15) 0%, transparent 50%);
+
+    The linear gradient stays a teal-on-teal vignette; the radial subtly throws sky-blue light from bottom-left. This keeps the "double-overlay luxurious hero" pattern but in the new palette.
+
+3b. .hero .lead — colour was rgba(247,243,236,0.92). Change to rgba(247, 250, 252, 0.92) so it reads against the teal overlay.
+
+3c. .nav-links a colour: was charcoal, stays charcoal — no change.
+    .nav-links a::after background was terracotta, now sky — already handled by the variable swap, no manual change needed.
+
+3d. Footer: site-footer used --forest-dark which is now --forest-dark = #0A2D38 (deepest teal). Confirm by reading the rule and verifying it picks up the new value.
+    .footer-acknowledgement border-top was rgba(247,243,236,0.1). Change to rgba(247, 250, 252, 0.1).
+    .footer-bottom border-top same — rgba(247, 250, 252, 0.1).
+    .footer-links a colour rgba(247,243,236,0.75). Change to rgba(247, 250, 252, 0.75).
+    .footer-acknowledgement colour rgba(247,243,236,0.6). Change to rgba(247, 250, 252, 0.6).
+    .footer-bottom colour rgba(247,243,236,0.5). Change to rgba(247, 250, 252, 0.5).
+    .footer-social a background rgba(247,243,236,0.08). Change to rgba(247, 250, 252, 0.08).
+
+3e. Form focus state: input:focus box-shadow was 0 0 0 3px rgba(201,123,92,0.15). Change to rgba(61, 168, 232, 0.18) — slightly stronger because sky blue at 0.15 reads weaker than terracotta did.
+
+3f. Form success: .form-success background was rgba(44,74,62,0.08). Change to rgba(15, 61, 76, 0.08).
+
+3g. Skip link: .skip-link:focus background uses --forest, which is now teal — already handled by variable swap.
+
+3h. Pull quote left border (used in index.html and elsewhere): if styled in CSS as border-left: 4px solid var(--terracotta), no change needed (variable swap handles it). If styled inline anywhere, find and verify.
+
+3i. Card-list bullet markers: ::before background uses --terracotta, now sky — variable swap handles it. Confirm by reading the rule.
+
+3j. Show me the diff of styles.css.
+
+>>> STOP 3: Confirm component rules are updated.
+
+=== STEP 4: HTML INLINE STYLE OVERRIDES ===
+
+4a. The header logo has an inline style: color: var(--forest). With variable swap that's now teal. Visually verify this looks right against the cream (now off-white) header. If it reads weak, change the inline style to color: var(--forest-dark) or color: #0A2D38 to deepen it. Report the call you made.
+
+4b. Footer column 1 div has inline style: color: var(--cream). Variable swap handles. Confirm.
+
+4c. Footer column 1 paragraph has inline style: color: rgba(247,243,236,0.75). Update to rgba(247, 250, 252, 0.75).
+
+4d. Footer column 1 logo div may have inline style margin-bottom: 16px and color: var(--cream). Variable swap handles colour.
+
+4e. Any pull quote or accent text that used inline color references to old palette values — find them and update.
+
+4f. Search for any remaining hex value from the old palette in HTML files. Report each hit. Update each.
+
+4g. Show me a diff per HTML file.
+
+>>> STOP 4: Confirm HTML inline overrides are clean.
+
+=== STEP 5: CARD-LIST BULLET COLOUR CHECK ===
+
+5a. The card-list ::before pseudo (the small horizontal dash before bulleted items) was terracotta = warmth. Now it's sky = electric. Visually that may be too punchy against teal headings.
+
+5b. Render mentally: card with off-white-alt bg, teal h3, charcoal body text, sky horizontal-dash bullets, sky icon circle.
+
+5c. If you think the sky bullets and sky icon circle in the same card create too much sky-blue noise, change the bullet ::before to use --teal-light (#1A5468) instead of --terracotta. This keeps the sky exclusively for the icon circle (the visual hero of the card) and uses muted teal for secondary accents.
+
+5d. Make the call. Report it. Update if needed.
+
+>>> STOP 5: Confirm bullet colour decision.
+
+=== STEP 6: HEADER LOGO STYLING ===
+
+6a. The header logo is currently text "ThriveAbility Care" in DM Serif Display, coloured --forest (now teal). Their existing brand uses a lowercase wordmark "thriveability care" with "EMBRACE EXCEL THRIVE" tagline below.
+
+6b. For this round, do NOT redesign the wordmark — that's a separate logo task. But do these two small things to nudge it closer to brand:
+    - Lowercase the displayed text in both header and footer: "thriveability care"
+    - Add a small tagline below in DM Sans, uppercase, letter-spacing 0.2em, font-size 0.625rem, color rgba(charcoal, 0.6) in header / rgba(off-white, 0.55) in footer: "EMBRACE · EXCEL · THRIVE"
+    - Stack vertically: wordmark on top, tagline below, both left-aligned, line-height tight (1.1)
+
+6c. Update the .header-logo CSS rule to be a flex column container with the tagline as a child element. Apply the same stacked layout in the footer's logo block.
+
+6d. Show me the updated header markup, footer markup, and CSS rules.
+
+>>> STOP 6: Confirm logo styling matches brand without doing a full logo redesign.
+
+=== STEP 7: VISUAL SANITY PASS ===
+
+7a. Walk through the rendered output mentally for each major surface and call out anything that may need a tweak:
+    - Hero overlay vs hero text legibility (especially over Unsplash images that may already have blue sky in the photo)
+    - CTA buttons against teal hero overlay (sky blue button on dark teal — should pop)
+    - Card icon circles (sky on off-white-alt — strong but not garish)
+    - Footer (deepest teal bg, off-white text, sky social hover)
+    - Final CTA bands (.section-forest now = teal section, sky CTA button on it)
+
+7b. Flag anything you'd recommend adjusting. Don't change it yet — just report and ask.
+
+>>> STOP 7: Confirm visual sanity before commit.
+
+=== STEP 8: COMMIT + REPORT ===
+
+8a. Run:
+    git add -A
+    git status
+
+8b. Show me staged file list.
+
+8c. Commit:
+    git commit -m "Round 2: palette swap to deep teal + sky blue + off-white to match client's existing brand identity (replaces Round 1 forest/cream/terracotta)"
+
+8d. Push:
+    git push
+
+8e. Update decisions.md with a Round 2 entry documenting the palette change and the reason (Round 1 went off-brand; Option A selected — match existing identity, level up execution).
+
+8f. Update progress.md to add a "Round 2: palette swap [x]" line under infrastructure or as a new "Rounds completed" section.
+
+8g. Commit and push the docs update separately:
+    git add decisions.md progress.md
+    git commit -m "Round 2 docs: palette decision + progress"
+    git push
+
+8h. Final report:
+    1. Files modified (count + list)
+    2. Variables that changed name vs alias (should be zero — all aliases)
+    3. Inline style overrides updated (count)
+    4. Header logo lowercase + tagline confirmation
+    5. Bullet colour decision (sky or teal-light)
+    6. Visual flags from Step 7 that you'd recommend addressing in a Round 3
+    7. Local preview command reminder
+    8. Git status
+
+DO NOT START A NEW ROUND. STOP HERE.
