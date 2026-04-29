@@ -3,6 +3,7 @@
 ## ROUNDS COMPLETED
 - [x] Round 1: initial 10-page build with forest/cream/terracotta palette
 - [x] Round 2: palette swap to deep teal + sky blue + off-white (match client's existing brand identity); lowercase wordmark + EMBRACE · EXCEL · THRIVE tagline
+- [x] Round 3: polish + map — header breathing room, section banding contrast, card icon to teal, Condell Park suburb-level map embed on contact page
 
 ## INFRASTRUCTURE
 - [x] Repo created and pushed
