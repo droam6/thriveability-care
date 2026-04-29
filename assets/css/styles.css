@@ -124,7 +124,7 @@ p:last-child {
 }
 
 main {
-  padding-top: 100px;
+  padding-top: 0;
 }
 
 /* ---------- 4. Layout primitives ---------- */
@@ -291,15 +291,37 @@ main {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: var(--cream);
+  background: transparent;
   padding: 28px 0;
   transition: var(--transition);
   border-bottom: 1px solid transparent;
 }
 
 .site-header.scrolled {
+  background: var(--cream);
   box-shadow: var(--shadow-sm);
-  border-bottom: 1px solid rgba(31, 41, 55, 0.06);
+  border-bottom: 1px solid rgba(15, 61, 76, 0.08);
+  padding: 18px 0;
+}
+
+.site-header:not(.scrolled) .header-logo {
+  color: var(--cream);
+}
+
+.site-header:not(.scrolled) .logo-tagline {
+  color: rgba(247, 250, 252, 0.7);
+}
+
+.site-header:not(.scrolled) .nav-links a {
+  color: var(--cream);
+}
+
+.site-header:not(.scrolled) .nav-links a::after {
+  background: var(--terracotta);
+}
+
+.site-header:not(.scrolled) .nav-toggle span {
+  background: var(--cream);
 }
 
 .header-inner {
@@ -455,21 +477,20 @@ body.nav-open {
 /* ---------- 7. Hero ---------- */
 .hero {
   position: relative;
-  min-height: 90vh;
+  min-height: 100dvh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   color: var(--cream);
   overflow: hidden;
-  margin-top: -84px;
-  padding-top: 84px;
 }
 
 .hero.hero-inner {
-  min-height: 60vh;
+  min-height: 70vh;
 }
 
 .hero.hero-compact {
-  min-height: 50vh;
+  min-height: 70vh;
 }
 
 .hero-bg {
@@ -767,6 +788,7 @@ button[disabled] {
   background: var(--forest-dark);
   color: var(--cream);
   padding: 80px 0 32px;
+  border-top: 1px solid rgba(247, 250, 252, 0.08);
 }
 
 .site-footer p {
@@ -1239,6 +1261,86 @@ button[disabled] {
   }
   .map-block-frame {
     aspect-ratio: 16 / 10;
+  }
+}
+
+/* Enquiry block (home page) */
+.enquiry-block {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.enquiry-block-text h2 {
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.enquiry-block-text .lead {
+  max-width: 460px;
+  margin-bottom: 40px;
+}
+
+.enquiry-block-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(15, 61, 76, 0.12);
+}
+
+.enquiry-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.enquiry-meta-label {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--charcoal-light);
+  font-weight: 500;
+}
+
+.enquiry-meta-value {
+  font-size: 1.0625rem;
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+a.enquiry-meta-value:hover {
+  color: var(--terracotta);
+}
+
+.enquiry-block-form {
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.home-enquiry-form .form-row + .form-row,
+.home-enquiry-form .form-row + .form-group,
+.home-enquiry-form .form-group + .form-group {
+  margin-top: 0;
+}
+
+.form-disclaimer {
+  margin-top: 16px;
+  font-size: 0.8125rem;
+  color: var(--charcoal-light);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .enquiry-block {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .enquiry-block-form {
+    padding: 28px;
   }
 }
 
