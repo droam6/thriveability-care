@@ -58,7 +58,7 @@ ul {
   --forest: #0F3D4C;
   --forest-dark: #0A2D38;
   --cream: #F7FAFC;
-  --cream-dark: #EDF2F7;
+  --cream-dark: #E2EBF3;
   --terracotta: #3DA8E8;
   --terracotta-dark: #2B8FCC;
   --charcoal: #1F2937;
@@ -124,7 +124,7 @@ p:last-child {
 }
 
 main {
-  padding-top: 84px;
+  padding-top: 100px;
 }
 
 /* ---------- 4. Layout primitives ---------- */
@@ -292,7 +292,7 @@ main {
   right: 0;
   z-index: 1000;
   background: var(--cream);
-  padding: 20px 0;
+  padding: 28px 0;
   transition: var(--transition);
   border-bottom: 1px solid transparent;
 }
@@ -539,7 +539,7 @@ body.nav-open {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--terracotta);
+  background: var(--forest);
   color: var(--white);
   display: flex;
   align-items: center;
@@ -1167,6 +1167,79 @@ button[disabled] {
 
 @media (max-width: 900px) {
   .contact-split { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* Map block (contact page) */
+.map-block {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.map-block-text h2 {
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.map-block-text p {
+  color: var(--charcoal-light);
+  max-width: 480px;
+  margin-bottom: 32px;
+}
+
+.map-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(15, 61, 76, 0.12);
+}
+
+.map-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-meta-label {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--charcoal-light);
+  font-weight: 500;
+}
+
+.map-meta-value {
+  font-size: 1rem;
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+.map-block-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.map-block-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .map-block {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .map-block-frame {
+    aspect-ratio: 16 / 10;
+  }
 }
 
 .privacy-note {

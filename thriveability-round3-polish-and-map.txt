@@ -1,0 +1,237 @@
+ROUND 3 — ThriveAbility Care polish round. Fix header cutoff, address two Round 2 visual flags (section banding contrast + card icon coolness), and add a suburb-level Google Maps embed to the contact page. No content changes. No new pages. No backend.
+
+Read CLAUDE.md, progress.md, decisions.md.
+
+Working directory: ~/Desktop/thriveability-care
+
+Execute in order. STOP at each marker.
+
+=== STEP 1: HEADER CUTOFF FIX ===
+
+1a. Open assets/css/styles.css and locate the .site-header rule.
+
+1b. The current header sits flush against the top of the viewport with no visual buffer. Fix in two coordinated changes:
+    - Increase .site-header padding from 20px 0 to 24px 0 32px 0 (extra top breathing room — top 32, bottom 24)
+    - Wait, simpler: change padding to 28px 0 (symmetric, generous)
+    
+    Use 28px 0 symmetric padding. This adds vertical breathing room without being lopsided.
+
+1c. The header is position: fixed, so the body content uses main { padding-top: 84px } to clear it. New header height with the increased padding will be approximately 92–96px depending on logo-with-tagline final height. Update main padding-top to 100px to give a small visual buffer between the header and the hero so heroes don't feel jammed under the nav.
+
+1d. Verify the .site-header.scrolled rule still works — it adds a box-shadow + border-bottom on scroll. No change needed there, just confirm.
+
+1e. Verify the mobile-nav slide-in panel (.mobile-nav) still has correct top offset. Currently padding 100px 32px 32px (the 100px clears the header). With new header height that's still fine — leave it.
+
+1f. Show me the updated .site-header rule, the main padding-top rule, and confirm .mobile-nav stayed at 100px top padding.
+
+>>> STOP 1: Confirm header breathing room is fixed.
+
+=== STEP 2: SECTION BANDING CONTRAST FIX ===
+
+2a. In :root, the current --cream-dark is #EDF2F7. This is too close to --cream (#F7FAFC) — 7 lightness points apart, alternating sections look almost identical.
+
+2b. Change --cream-dark to #E2EBF3 (deepens the alt section just enough that the rhythm is visible without being heavy-handed).
+
+2c. Verify the change cascades correctly to:
+    - .section-cream-dark backgrounds
+    - .card backgrounds (cards sit on cream-dark)
+    - any other rule using var(--cream-dark)
+
+2d. Walk through every page that uses .section-cream-dark and .card. Render mentally: does the new darker tint still let teal headings, charcoal body, and sky-blue CTAs read clearly against it? Flag anything that breaks. Don't change those — just report.
+
+2e. Show me the updated :root --cream-dark line and the visual sanity check.
+
+>>> STOP 2: Confirm banding is fixed.
+
+=== STEP 3: CARD ICON COLOUR FIX ===
+
+3a. The Round 2 flag: sky icon disc + sky-related accents inside the same card create too much sky-blue noise. Sky should be reserved for CTAs, active nav underline, and link hovers — high-attention elements. Cards are decorative.
+
+3b. Change .card-icon background from var(--terracotta) (which is now sky #3DA8E8) to var(--forest) (which is now deep teal #0F3D4C).
+    
+    The icon SVG inside the disc stays white (it's already filling currentColor with the white disc text colour; verify and adjust if not).
+
+3c. This means card icons become deep teal discs with white SVG inside — strong, calm, on-brand. Sky stays exclusive to interaction targets.
+
+3d. Confirm card-icon hover (if any defined): the .card:hover currently lifts the whole card and changes background to white. The icon stays teal — that's correct, no need to override.
+
+3e. Verify the .card-list li::before bullet markers (set to var(--teal-light) in Round 2) still look right against the new icon colour. Visually: card has cream-dark bg, deep-teal icon disc, teal-light bullet dashes. That's a teal monochrome card with white-on-teal icon as the focal point — clean, consistent, premium.
+
+3f. Show me the updated .card-icon rule and confirm the visual check.
+
+>>> STOP 3: Confirm card icon is fixed.
+
+=== STEP 4: GOOGLE MAPS EMBED ON CONTACT PAGE ===
+
+4a. The client has no Google Business Profile and no street address on file. NDIS Commission registry lists their service area as Condell Park, NSW 2200. Use a suburb-level embed with a clear "by appointment only" note.
+
+4b. Open contact.html. Locate the section with the two-column split (text left, form right).
+
+4c. Add a NEW section AFTER the two-column split section but BEFORE the final CTA band. Spec:
+
+    Section markup:
+    <section class="section section-cream-dark" data-aos="fade-up">
+      <div class="container">
+        <div class="map-block">
+          <div class="map-block-text">
+            <span class="eyebrow">Where we are</span>
+            <h2>Serving New South Wales</h2>
+            <p>Our office is based in Condell Park, NSW. We deliver supports across Sydney metro and the wider NSW region. Office visits are by appointment only — please contact us to arrange a meeting that suits your schedule.</p>
+            <div class="map-meta">
+              <div class="map-meta-row">
+                <span class="map-meta-label">Service area</span>
+                <span class="map-meta-value">New South Wales (Sydney metro + surrounds)</span>
+              </div>
+              <div class="map-meta-row">
+                <span class="map-meta-label">Office</span>
+                <span class="map-meta-value">Condell Park, NSW 2200</span>
+              </div>
+              <div class="map-meta-row">
+                <span class="map-meta-label">Visits</span>
+                <span class="map-meta-value">By appointment only</span>
+              </div>
+            </div>
+          </div>
+          <div class="map-block-frame">
+            <iframe
+              src="https://maps.google.com/maps?q=Condell+Park+NSW+2200&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style="border: 0;"
+              loading="lazy"
+              allowfullscreen=""
+              referrerpolicy="no-referrer-when-downgrade"
+              title="ThriveAbility Care service area — Condell Park, NSW">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+4d. Add corresponding CSS to assets/css/styles.css (place it in a logical position — near .split rules or in a new "Map block" section comment):
+
+    .map-block {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .map-block-text h2 {
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+    .map-block-text p {
+      color: var(--charcoal-light);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .map-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(15, 61, 76, 0.12);
+    }
+    .map-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .map-meta-label {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--charcoal-light);
+      font-weight: 500;
+    }
+    .map-meta-value {
+      font-size: 1rem;
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+    .map-block-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .map-block-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    @media (max-width: 900px) {
+      .map-block {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .map-block-frame {
+        aspect-ratio: 16 / 10;
+      }
+    }
+
+4e. Show me the contact.html change and the new CSS block. Verify the iframe URL works without an API key (the maps.google.com/maps?q=...&output=embed pattern is the public embed URL, no key needed).
+
+>>> STOP 4: Confirm map block is in.
+
+=== STEP 5: ANTI-VIBECODE AUDIT (focused) ===
+
+5a. Re-run the relevant subset of anti-vibecode checks:
+    - No new emoji introduced (map block uses no icons besides what's already there — confirm)
+    - No new inline styles (the iframe has style="border: 0;" which is acceptable as a one-off iframe reset)
+    - No lorem ipsum
+    - All new text is real client info, no placeholder words
+
+5b. Verify all internal links and asset paths still resolve. The Round 3 changes touch:
+    - styles.css (one file)
+    - contact.html (one file)
+    No path changes elsewhere. Confirm.
+
+5c. Verify the Formspree placeholder FORMSPREE_ID_HERE is still unchanged (this is intentional — Round 3 is not the round to wire it). Just confirm it's still there in the same 4 files (contact.html, main.js, progress.md, CLAUDE.md).
+
+5d. Show me the audit summary.
+
+>>> STOP 5: Confirm clean audit.
+
+=== STEP 6: COMMIT + REPORT ===
+
+6a. Run:
+    git add -A
+    git status
+
+6b. Show staged file list.
+
+6c. Commit:
+    git commit -m "Round 3: header breathing room, section banding contrast, card icon to teal, Condell Park map embed on contact page"
+
+6d. Push:
+    git push
+
+6e. Update decisions.md with a Round 3 entry noting:
+    - Header padding 20px 0 → 28px 0 + main padding-top 84px → 100px (Jack flagged header looked cut off)
+    - --cream-dark #EDF2F7 → #E2EBF3 (Round 2 flag A, banding contrast)
+    - .card-icon background swapped from sky to deep teal (Round 2 flag B, card icon coolness — sky now reserved for CTAs/active states)
+    - Map: suburb-level embed (Condell Park 2200), no API key, no Google Business Profile yet so no reviews displayed (client to set up GBP separately)
+
+6f. Update progress.md adding "Round 3 [x] polish + map" line.
+
+6g. Commit and push docs:
+    git add decisions.md progress.md
+    git commit -m "Round 3 docs: polish + map decisions"
+    git push
+
+6h. Final report:
+    1. Files modified (count + list)
+    2. Header padding values before/after
+    3. --cream-dark before/after hex
+    4. .card-icon before/after colour token
+    5. Map embed URL used (full URL, confirm no API key)
+    6. Any visual concerns or follow-up needed
+    7. Local preview command reminder
+    8. Git status
+
+DO NOT START A NEW ROUND. STOP HERE.
