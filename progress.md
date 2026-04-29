@@ -1,5 +1,9 @@
 # ThriveAbility Care — Progress
 
+## ROUNDS COMPLETED
+- [x] Round 1: initial 10-page build with forest/cream/terracotta palette
+- [x] Round 2: palette swap to deep teal + sky blue + off-white (match client's existing brand identity); lowercase wordmark + EMBRACE · EXCEL · THRIVE tagline
+
 ## INFRASTRUCTURE
 - [x] Repo created and pushed
 - [ ] Formspree endpoint live (ID: FORMSPREE_ID_HERE)
