@@ -4,6 +4,7 @@
 - [x] Round 1: initial 10-page build with forest/cream/terracotta palette
 - [x] Round 2: palette swap to deep teal + sky blue + off-white (match client's existing brand identity); lowercase wordmark + EMBRACE · EXCEL · THRIVE tagline
 - [x] Round 3: polish + map — header breathing room, section banding contrast, card icon to teal, Condell Park suburb-level map embed on contact page
+- [x] Round 4: header pattern + hero sizing + home enquiry form — transparent header over hero with solid-on-scroll, hero fills 100dvh on home (70vh on inner pages), home page enquiry form between Why-Choose and final CTA, footer top border separator
 
 ## INFRASTRUCTURE
 - [x] Repo created and pushed
